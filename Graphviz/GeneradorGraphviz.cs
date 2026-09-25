@@ -8,7 +8,11 @@ namespace IPC2_Proyecto2.Graphviz
 {
     public class GeneradorGraphviz
     {
-        private const string RutaEjecutableDot = @"C:\Program Files\Graphviz\bin\dot.exe";
+        private static readonly string[] RutasGraphviz =
+        {
+            @"C:\Program Files\Graphviz\bin\dot.exe",
+            @"C:\Program Files (x86)\Graphviz\bin\dot.exe"
+        };
 
         public string GenerarImagenEstructura(Catalogo catalogo, string nombreCategoriaInicio, string carpetaSalida, out string mensajeError)
         {
@@ -93,16 +97,17 @@ namespace IPC2_Proyecto2.Graphviz
 
                 File.WriteAllText(rutaDot, textoDot);
 
-                if (!File.Exists(RutaEjecutableDot))
+                string rutaEjecutableDot = ObtenerRutaGraphviz();
+
+                if (rutaEjecutableDot == null)
                 {
-                    mensajeError = "No se encontró Graphviz en: " + RutaEjecutableDot +
-                                    ". Verifica que esté instalado y ajusta la ruta en GeneradorGraphviz.cs.";
+                    mensajeError = "No se encontró el ejecutable dot.exe de Graphviz. Verifica que Graphviz esté instalado.";
                     return false;
                 }
 
                 ProcessStartInfo info = new ProcessStartInfo
                 {
-                    FileName = RutaEjecutableDot,
+                    FileName = rutaEjecutableDot,
                     Arguments = $"-Tpng \"{rutaDot}\" -o \"{rutaPng}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -128,6 +133,23 @@ namespace IPC2_Proyecto2.Graphviz
                 mensajeError = "Ocurrió un error generando la imagen: " + ex.Message;
                 return false;
             }
+        }
+
+        private string ObtenerRutaGraphviz()
+        {
+            foreach (string ruta in RutasGraphviz)
+            {
+                if (File.Exists(ruta)) return ruta;
+            }
+
+            string rutaPath = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
+            foreach (string carpeta in rutaPath.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string ruta = Path.Combine(carpeta.Trim(), "dot.exe");
+                if (File.Exists(ruta)) return ruta;
+            }
+
+            return null;
         }
 
         private string EscaparParaDot(string texto)
