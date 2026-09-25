@@ -34,29 +34,46 @@ namespace IPC2_Proyecto2.TDA
             return BuscarRecursivo(actual.HermanoSiguiente, nombre);
         }
 
-        public bool AgregarCategoria(string nombre, string nombrePadre)
+        public bool AgregarCategoria(string nombre, string? nombrePadre)
         {
-            if (BuscarCategoria(nombre) != null)
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                return false;
+            }
+
+            string nombreNormalizado = nombre.Trim();
+            if (string.IsNullOrEmpty(nombreNormalizado))
+            {
+                return false;
+            }
+
+            if (BuscarCategoria(nombreNormalizado) != null)
             {
                 return false;
             }
 
             NodoCategoria padre;
 
-            if (string.IsNullOrEmpty(nombrePadre))
+            if (string.IsNullOrWhiteSpace(nombrePadre))
             {
                 padre = raizVirtual;
             }
             else
             {
-                padre = BuscarCategoria(nombrePadre);
+                string nombrePadreNormalizado = nombrePadre.Trim();
+                if (string.Equals(nombreNormalizado, nombrePadreNormalizado, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
+                padre = BuscarCategoria(nombrePadreNormalizado);
                 if (padre == null)
                 {
                     return false;
                 }
             }
 
-            NodoCategoria nuevaCategoria = new NodoCategoria(nombre, padre == raizVirtual ? null : padre);
+            NodoCategoria nuevaCategoria = new NodoCategoria(nombreNormalizado, padre == raizVirtual ? null : padre);
             InsertarOrdenadoAlfabeticamente(padre, nuevaCategoria);
             return true;
         }

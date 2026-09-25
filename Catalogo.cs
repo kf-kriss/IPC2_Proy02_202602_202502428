@@ -23,11 +23,35 @@ namespace IPC2_Proyecto2
 
         public string RegistrarLibro(int isbn, string titulo, string autor, string nombreCategoria)
         {
+            if (isbn <= 0)
+            {
+                return "El ISBN debe ser un número mayor a cero.";
+            }
+
+            string tituloNormalizado = titulo?.Trim() ?? string.Empty;
+            string autorNormalizado = autor?.Trim() ?? string.Empty;
+            string categoriaNormalizada = nombreCategoria?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(tituloNormalizado))
+            {
+                return "El título no puede estar vacío.";
+            }
+
+            if (string.IsNullOrWhiteSpace(autorNormalizado))
+            {
+                return "El autor no puede estar vacío.";
+            }
+
+            if (string.IsNullOrWhiteSpace(categoriaNormalizada))
+            {
+                return "La categoría del libro no puede estar vacía.";
+            }
+
             try
             {
-                ValidarRegistro(isbn, nombreCategoria);
+                ValidarRegistro(isbn, categoriaNormalizada);
 
-                Libro nuevoLibro = new Libro(isbn, titulo, autor, nombreCategoria);
+                Libro nuevoLibro = new Libro(isbn, tituloNormalizado, autorNormalizado, categoriaNormalizada);
                 Libros.Insertar(nuevoLibro);
                 Categorias.AgregarLibroACategoria(nuevoLibro);
 
@@ -77,9 +101,14 @@ namespace IPC2_Proyecto2
             return Libros.RecorridoAscendente();
         }
 
-        public bool AgregarCategoria(string nombre, string nombrePadre)
+        public bool AgregarCategoria(string nombre, string? nombrePadre)
         {
-            return Categorias.AgregarCategoria(nombre, nombrePadre);
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                return false;
+            }
+
+            return Categorias.AgregarCategoria(nombre.Trim(), nombrePadre);
         }
 
         public string ObtenerEstructuraCategorias(string nombreCategoriaInicio = null)

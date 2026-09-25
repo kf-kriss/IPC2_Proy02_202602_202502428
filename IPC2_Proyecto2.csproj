@@ -10,4 +10,11 @@
     <Folder Include="wwwroot\imagenes\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="IPC2_Proyecto2.Tests\**\*.cs" />
+    <Content Remove="IPC2_Proyecto2.Tests\**\*" />
+    <EmbeddedResource Remove="IPC2_Proyecto2.Tests\**\*" />
+    <None Remove="IPC2_Proyecto2.Tests\**\*" />
+  </ItemGroup>
+
 </Project>
