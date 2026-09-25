@@ -1,0 +1,72 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Sistema de Catálogo de Librería</h1>
+    <p>Bienvenido. Selecciona una opción para comenzar.</p>
+</div>
+
+<div class="text-center mb-4">
+    <form method="post" asp-page-handler="Reiniciar" onsubmit="return confirm('¿Seguro que deseas reiniciar el catálogo? Se perderán todas las categorías y libros cargados.');">
+        <button type="submit" class="btn btn-outline-danger btn-sm">Reiniciar catálogo (inicializar sin datos)</button>
+    </form>
+    @if (!string.IsNullOrEmpty(Model.MensajeReinicio))
+    {
+        <div class="alert alert-warning mt-2 d-inline-block">@Model.MensajeReinicio</div>
+    }
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Cargar archivo XML</h5>
+                <p class="card-text">Sube un archivo de configuración para registrar categorías y libros.</p>
+                <a href="/CargarXml" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Categorías</h5>
+                <p class="card-text">Ver la estructura de categorías y subcategorías, o agregar una nueva.</p>
+                <a href="/Categorias" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Libros</h5>
+                <p class="card-text">Registrar, buscar, eliminar libros, y ver el de menor/mayor ISBN.</p>
+                <a href="/Libros" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Ver gráfico de categoría</h5>
+                <p class="card-text">Genera una imagen (Graphviz) con los libros de una categoría o la estructura completa.</p>
+                <a href="/VerCategoriaGrafica" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Ayuda</h5>
+                <p class="card-text">Información del estudiante y enlace a la documentación del proyecto.</p>
+                <a href="/Ayuda" class="btn btn-secondary">Ir</a>
+            </div>
+        </div>
+    </div>
+</div>

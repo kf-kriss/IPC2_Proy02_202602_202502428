@@ -1,0 +1,60 @@
+﻿@page
+@model IPC2_Proyecto2.Pages.CategoriasModel
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<h1>Categorías</h1>
+
+<div class="row">
+    <!-- ===================== AGREGAR CATEGORÍA ===================== -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Agregar una categoría nueva</div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="Agregar">
+                    <div class="mb-2">
+                        <label>Nombre de la categoría</label>
+                        <input type="text" name="NuevoNombre" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label>Categoría padre (dejar vacío si es principal)</label>
+                        <input type="text" name="NuevoPadre" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.MensajeAgregar))
+                {
+                    <div class="alert alert-info mt-2">@Model.MensajeAgregar</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== VER DESDE UNA SUBCATEGORÍA ===================== -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Ver estructura desde una subcategoría</div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="VerDesde">
+                    <div class="mb-2">
+                        <label>Nombre de la categoría (dejar vacío para ver todo)</label>
+                        <input type="text" name="CategoriaInicio" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Ver estructura</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== ESTRUCTURA ===================== -->
+<div class="card mb-4">
+    <div class="card-header">Estructura de categorías</div>
+    <div class="card-body">
+        <pre>@Model.Estructura</pre>
+    </div>
+</div>
+
+<p><a href="/">Volver al menú principal</a></p>

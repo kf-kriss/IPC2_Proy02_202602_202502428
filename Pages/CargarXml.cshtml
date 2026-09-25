@@ -1,0 +1,27 @@
+﻿@page
+@model IPC2_Proyecto2.Pages.CargarXmlModel
+@{
+    ViewData["Title"] = "Cargar archivo XML";
+}
+
+<h1>Cargar archivo XML de configuración</h1>
+
+<p>Selecciona un archivo <code>entrada.xml</code> para registrar categorías y libros en el catálogo.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <input type="file" name="ArchivoXml" accept=".xml" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Cargar archivo</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-info mt-3">
+        @Model.Mensaje
+    </div>
+}
+
+<p class="mt-3">
+    <a href="/">Volver al menú principal</a>
+</p>

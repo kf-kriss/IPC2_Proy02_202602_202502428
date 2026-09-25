@@ -1,0 +1,48 @@
+﻿@page
+@model IPC2_Proyecto2.Pages.VerCategoriaGraficaModel
+@{
+    ViewData["Title"] = "Ver gráfico de categoría";
+}
+
+<h1>Ver gráfico de categoría</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="post" asp-page-handler="Generar">
+            <div class="mb-2">
+                <label>Nombre de la categoría (dejar vacío para ver la estructura completa)</label>
+                <input type="text" name="NombreCategoria" class="form-control" value="@Model.NombreCategoria" />
+            </div>
+
+            <div class="mb-2">
+                <label class="me-3">
+                    <input type="radio" name="TipoGrafico" value="libros" checked="@(Model.TipoGrafico == "libros")" />
+                    Libros de la categoría (orden ascendente por ISBN)
+                </label>
+                <br />
+                <label>
+                    <input type="radio" name="TipoGrafico" value="estructura" checked="@(Model.TipoGrafico == "estructura")" />
+                    Estructura de categorías y subcategorías
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generar gráfico</button>
+        </form>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div class="alert alert-warning">@Model.MensajeError</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.RutaImagen))
+{
+    <div class="card">
+        <div class="card-body text-center">
+            <img src="@Model.RutaImagen" alt="Gráfico generado" style="max-width: 100%;" />
+        </div>
+    </div>
+}
+
+<p class="mt-3"><a href="/">Volver al menú principal</a></p>

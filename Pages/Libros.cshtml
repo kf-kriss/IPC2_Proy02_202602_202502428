@@ -1,0 +1,143 @@
+﻿@page
+@model IPC2_Proyecto2.Pages.LibrosModel
+@{
+    ViewData["Title"] = "Gestión de libros";
+}
+
+<h1>Gestión de libros</h1>
+
+<div class="row">
+    <!-- ===================== REGISTRAR ===================== -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Registrar un nuevo libro</div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="Registrar">
+                    <div class="mb-2">
+                        <label>ISBN</label>
+                        <input type="number" name="NuevoIsbn" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label>Título</label>
+                        <input type="text" name="NuevoTitulo" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label>Autor</label>
+                        <input type="text" name="NuevoAutor" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label>Categoría</label>
+                        <input type="text" name="NuevaCategoria" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+
+                @if (!string.IsNullOrEmpty(Model.MensajeRegistro))
+                {
+                    <div class="alert alert-info mt-2">@Model.MensajeRegistro</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== BUSCAR / ELIMINAR ===================== -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Buscar o eliminar por ISBN</div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-2">
+                        <label>ISBN</label>
+                        <input type="number" name="IsbnConsulta" class="form-control" required />
+                    </div>
+                    <button type="submit" asp-page-handler="Buscar" class="btn btn-secondary">Buscar</button>
+                    <button type="submit" asp-page-handler="Eliminar" class="btn btn-danger">Eliminar</button>
+                </form>
+
+                @if (Model.LibroEncontrado != null)
+                {
+                    <div class="alert alert-success mt-2">
+                        <strong>Encontrado:</strong> @Model.LibroEncontrado.ToString()
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.MensajeBusqueda))
+                {
+                    <div class="alert alert-warning mt-2">@Model.MensajeBusqueda</div>
+                }
+                @if (!string.IsNullOrEmpty(Model.MensajeEliminar))
+                {
+                    <div class="alert alert-info mt-2">@Model.MensajeEliminar</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MÍNIMO Y MÁXIMO ===================== -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Libro con menor ISBN</div>
+            <div class="card-body">
+                @if (Model.LibroMenor != null)
+                {
+                    <p>@Model.LibroMenor.ToString()</p>
+                }
+                else
+                {
+                    <p class="text-muted">El catálogo está vacío.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Libro con mayor ISBN</div>
+            <div class="card-body">
+                @if (Model.LibroMayor != null)
+                {
+                    <p>@Model.LibroMayor.ToString()</p>
+                }
+                else
+                {
+                    <p class="text-muted">El catálogo está vacío.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== LISTADO ASCENDENTE ===================== -->
+<div class="card mb-4">
+    <div class="card-header">Todos los libros (orden ascendente por ISBN)</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ISBN</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var nodoActual = Model.TodosLosLibros?.ObtenerPrimero();
+                }
+                @while (nodoActual != null)
+                {
+                    <tr>
+                        <td>@nodoActual.Libro.ISBN</td>
+                        <td>@nodoActual.Libro.Titulo</td>
+                        <td>@nodoActual.Libro.Autor</td>
+                        <td>@nodoActual.Libro.NombreCategoria</td>
+                    </tr>
+                    nodoActual = nodoActual.Siguiente;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><a href="/">Volver al menú principal</a></p>
