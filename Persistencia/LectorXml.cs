@@ -4,15 +4,8 @@ using IPC2_Proyecto2.Modelos;
 
 namespace IPC2_Proyecto2.Persistencia
 {
-    // Esta clase se encarga de leer un archivo entrada.xml y usar sus
-    // datos para llenar el Catalogo (categorías y libros).
-    //
-    // Recuerda que, según el PDF, el archivo es incremental: listaCategorias
-    // y listaLibros son ambos opcionales, y puede haber varios archivos
-    // de entrada a lo largo del tiempo.
     public class LectorXml
     {
-        // Devuelve un mensaje resumen para mostrarlo en la interfaz web.
         public string CargarArchivo(string rutaArchivo, Catalogo catalogo)
         {
             XmlDocument documento = new XmlDocument();
@@ -31,16 +24,11 @@ namespace IPC2_Proyecto2.Persistencia
             int librosAgregados = 0;
             int librosFallidos = 0;
 
-            // --- 1. Procesar <listaCategorias> (si existe) ---
             XmlNode nodoListaCategorias = documento.SelectSingleNode("//listaCategorias");
             if (nodoListaCategorias != null)
             {
                 XmlNodeList nodosCategoria = nodoListaCategorias.SelectNodes("categoria");
 
-                // Como una categoría podría aparecer en el XML ANTES que su
-                // padre (aunque no es lo normal), hacemos varias pasadas:
-                // en cada pasada intentamos agregar las que falten, hasta
-                // que ya no se pueda agregar ninguna más.
                 bool seAgregoAlgunaEnEstaVuelta = true;
                 bool[] yaProcesada = new bool[nodosCategoria.Count];
 
@@ -72,15 +60,12 @@ namespace IPC2_Proyecto2.Persistencia
                     }
                 }
 
-                // Cualquier categoría que quedó sin procesar es porque su
-                // padre nunca apareció, o el nombre ya existía.
                 for (int i = 0; i < nodosCategoria.Count; i++)
                 {
                     if (!yaProcesada[i]) categoriasFallidas++;
                 }
             }
 
-            // --- 2. Procesar <listaLibros> (si existe) ---
             XmlNode nodoListaLibros = documento.SelectSingleNode("//listaLibros");
             if (nodoListaLibros != null)
             {

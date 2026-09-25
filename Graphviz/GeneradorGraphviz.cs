@@ -6,19 +6,10 @@ using IPC2_Proyecto2.TDA;
 
 namespace IPC2_Proyecto2.Graphviz
 {
-    // Esta clase se encarga de todo lo relacionado con Graphviz:
-    // arma el texto en formato .dot, lo guarda en un archivo, y ejecuta
-    // el programa externo "dot.exe" para convertirlo en una imagen .png.
     public class GeneradorGraphviz
     {
-        // AJUSTA esta ruta si Graphviz quedó instalado en otro lugar de tu
-        // computadora. Es la ruta al ejecutable "dot.exe" que instalaste.
         private const string RutaEjecutableDot = @"C:\Program Files\Graphviz\bin\dot.exe";
 
-        // --- GRAFICAR LA ESTRUCTURA DE CATEGORÍAS (todo o desde una subcategoría) ---
-        // carpetaSalida: ruta física en el servidor donde se debe guardar la imagen
-        // (normalmente wwwroot/graficos). Devuelve el NOMBRE del archivo .png
-        // generado (no la ruta completa), o null si algo falló.
         public string GenerarImagenEstructura(Catalogo catalogo, string nombreCategoriaInicio, string carpetaSalida, out string mensajeError)
         {
             mensajeError = null;
@@ -46,7 +37,6 @@ namespace IPC2_Proyecto2.Graphviz
             return EjecutarGraphviz(textoDot, carpetaSalida, nombreArchivo, out mensajeError) ? nombreArchivo : null;
         }
 
-        // --- GRAFICAR LOS LIBROS DE UNA CATEGORÍA (en orden ascendente por ISBN) ---
         public string GenerarImagenLibrosCategoria(Catalogo catalogo, string nombreCategoria, string carpetaSalida, out string mensajeError)
         {
             mensajeError = null;
@@ -87,7 +77,6 @@ namespace IPC2_Proyecto2.Graphviz
             return EjecutarGraphviz(dot.ToString(), carpetaSalida, nombreArchivo, out mensajeError) ? nombreArchivo : null;
         }
 
-        // --- LÓGICA COMÚN: guardar el .dot y ejecutar dot.exe ---
         private bool EjecutarGraphviz(string textoDot, string carpetaSalida, string nombreArchivoPng, out string mensajeError)
         {
             mensajeError = null;

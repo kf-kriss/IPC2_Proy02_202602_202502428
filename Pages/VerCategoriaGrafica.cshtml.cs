@@ -22,11 +22,9 @@ namespace IPC2_Proyecto2.Pages
         [BindProperty]
         public string NombreCategoria { get; set; }
 
-        // "estructura" = árbol de categorías. "libros" = libros de una categoría.
         [BindProperty]
         public string TipoGrafico { get; set; } = "libros";
 
-        // Ruta relativa (dentro de wwwroot) para poder mostrarla con <img src="...">
         public string RutaImagen { get; set; }
         public string MensajeError { get; set; }
 
@@ -36,8 +34,6 @@ namespace IPC2_Proyecto2.Pages
 
         public IActionResult OnPostGenerar()
         {
-            // IMPORTANTE: ajusta "imagenes" si tu carpeta dentro de wwwroot
-            // se llama distinto (por ejemplo "graficos").
             string carpetaSalida = Path.Combine(entorno.WebRootPath, "imagenes");
 
             string nombreArchivo;

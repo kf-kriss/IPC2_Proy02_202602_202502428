@@ -5,13 +5,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Sistema de Catálogo de Librería</h1>
-    <p>Bienvenido. Selecciona una opción para comenzar.</p>
+    <h1 class="display-4">Sistema de Organización de Inventario</h1>
+    <p>Panel principal del sistema. Elige una opción para gestionar la información.</p>
 </div>
 
 <div class="text-center mb-4">
-    <form method="post" asp-page-handler="Reiniciar" onsubmit="return confirm('¿Seguro que deseas reiniciar el catálogo? Se perderán todas las categorías y libros cargados.');">
-        <button type="submit" class="btn btn-outline-danger btn-sm">Reiniciar catálogo (inicializar sin datos)</button>
+    <form method="post" asp-page-handler="Reiniciar" onsubmit="return confirm('¿Deseas limpiar completamente el estado actual del sistema?');">
+        <button type="submit" class="btn btn-outline-danger btn-sm">Resetear sistema</button>
     </form>
     @if (!string.IsNullOrEmpty(Model.MensajeReinicio))
     {
@@ -23,9 +23,9 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">Cargar archivo XML</h5>
-                <p class="card-text">Sube un archivo de configuración para registrar categorías y libros.</p>
-                <a href="/CargarXml" class="btn btn-primary">Ir</a>
+                <h5 class="card-title">Carga inicial</h5>
+                <p class="card-text">Importa un archivo de configuración para comenzar con categorías y registros.</p>
+                <a href="/CargarXml" class="btn btn-primary">Abrir</a>
             </div>
         </div>
     </div>
@@ -33,9 +33,9 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">Categorías</h5>
-                <p class="card-text">Ver la estructura de categorías y subcategorías, o agregar una nueva.</p>
-                <a href="/Categorias" class="btn btn-primary">Ir</a>
+                <h5 class="card-title">Jerarquías</h5>
+                <p class="card-text">Consulta la estructura general y agrega nuevas divisiones o subcategorías.</p>
+                <a href="/Categorias" class="btn btn-primary">Abrir</a>
             </div>
         </div>
     </div>
@@ -43,9 +43,9 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">Libros</h5>
-                <p class="card-text">Registrar, buscar, eliminar libros, y ver el de menor/mayor ISBN.</p>
-                <a href="/Libros" class="btn btn-primary">Ir</a>
+                <h5 class="card-title">Registros</h5>
+                <p class="card-text">Agrega, busca y elimina elementos según su identificador.</p>
+                <a href="/Libros" class="btn btn-primary">Abrir</a>
             </div>
         </div>
     </div>
@@ -53,9 +53,9 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
-                <h5 class="card-title">Ver gráfico de categoría</h5>
-                <p class="card-text">Genera una imagen (Graphviz) con los libros de una categoría o la estructura completa.</p>
-                <a href="/VerCategoriaGrafica" class="btn btn-primary">Ir</a>
+                <h5 class="card-title">Visualización</h5>
+                <p class="card-text">Genera gráficos de la estructura o del conjunto seleccionado.</p>
+                <a href="/VerCategoriaGrafica" class="btn btn-primary">Abrir</a>
             </div>
         </div>
     </div>
@@ -64,8 +64,8 @@
         <div class="card h-100">
             <div class="card-body">
                 <h5 class="card-title">Ayuda</h5>
-                <p class="card-text">Información del estudiante y enlace a la documentación del proyecto.</p>
-                <a href="/Ayuda" class="btn btn-secondary">Ir</a>
+                <p class="card-text">Consulta la información del sistema y los datos del responsable.</p>
+                <a href="/Ayuda" class="btn btn-secondary">Abrir</a>
             </div>
         </div>
     </div>

@@ -18,7 +18,6 @@ namespace IPC2_Proyecto2.Pages
         {
         }
 
-        // Botón "Reiniciar catálogo"
         public IActionResult OnPostReiniciar()
         {
             catalogo.Reiniciar();

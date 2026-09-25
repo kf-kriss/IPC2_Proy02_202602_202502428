@@ -43,7 +43,6 @@ namespace IPC2_Proyecto2.Pages
             CargarDatosGenerales();
         }
 
-        // Botón "Registrar libro"
         public IActionResult OnPostRegistrar()
         {
             if (NuevoIsbn <= 0)
@@ -71,7 +70,6 @@ namespace IPC2_Proyecto2.Pages
             return Page();
         }
 
-        // Botón "Buscar por ISBN"
         public IActionResult OnPostBuscar()
         {
             if (IsbnConsulta <= 0)
@@ -92,7 +90,6 @@ namespace IPC2_Proyecto2.Pages
             return Page();
         }
 
-        // Botón "Eliminar por ISBN"
         public IActionResult OnPostEliminar()
         {
             if (IsbnConsulta <= 0)

@@ -29,7 +29,6 @@ namespace IPC2_Proyecto2.Pages
             Estructura = catalogo.ObtenerEstructuraCategorias();
         }
 
-        // Botón "Agregar categoría"
         public IActionResult OnPostAgregar()
         {
             if (string.IsNullOrWhiteSpace(NuevoNombre))
@@ -49,7 +48,6 @@ namespace IPC2_Proyecto2.Pages
             return Page();
         }
 
-        // Botón "Ver desde esta categoría"
         public IActionResult OnPostVerDesde()
         {
             Estructura = catalogo.ObtenerEstructuraCategorias(CategoriaInicio);

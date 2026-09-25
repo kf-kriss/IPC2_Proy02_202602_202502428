@@ -3,12 +3,6 @@ using IPC2_Proyecto2.Modelos;
 
 namespace IPC2_Proyecto2.TDA
 {
-    // Árbol de categorías del catálogo.
-    //
-    // Usamos un nodo "raíz virtual" invisible que actúa como padre de
-    // todas las categorías principales (las que no tienen padre en el
-    // XML). Así todo el árbol cuelga de un solo punto de entrada, sin
-    // necesidad de una lista de "categorías raíz".
     public class ArbolCategorias
     {
         private NodoCategoria raizVirtual;
@@ -18,13 +12,11 @@ namespace IPC2_Proyecto2.TDA
             raizVirtual = new NodoCategoria("CATALOGO_GENERAL", null);
         }
 
-        // Primera categoría de nivel superior (para poder recorrer desde afuera).
         public NodoCategoria ObtenerCategoriasRaiz()
         {
             return raizVirtual.PrimerHijo;
         }
 
-        // --- BUSCAR UNA CATEGORÍA POR NOMBRE (recorre todo el árbol) ---
         public NodoCategoria BuscarCategoria(string nombre)
         {
             return BuscarRecursivo(raizVirtual.PrimerHijo, nombre);
@@ -36,20 +28,14 @@ namespace IPC2_Proyecto2.TDA
 
             if (actual.Nombre == nombre) return actual;
 
-            // Buscar primero entre los hijos de esta categoría...
             NodoCategoria enHijos = BuscarRecursivo(actual.PrimerHijo, nombre);
             if (enHijos != null) return enHijos;
 
-            // ...si no está, seguir buscando entre los hermanos.
             return BuscarRecursivo(actual.HermanoSiguiente, nombre);
         }
 
-        // --- AGREGAR UNA CATEGORÍA NUEVA ---
-        // Si nombrePadre viene vacío o null, la categoría se agrega como
-        // categoría principal (de primer nivel).
         public bool AgregarCategoria(string nombre, string nombrePadre)
         {
-            // El nombre de categoría debe ser único en todo el árbol.
             if (BuscarCategoria(nombre) != null)
             {
                 return false;
@@ -66,7 +52,6 @@ namespace IPC2_Proyecto2.TDA
                 padre = BuscarCategoria(nombrePadre);
                 if (padre == null)
                 {
-                    // El padre indicado no existe todavía.
                     return false;
                 }
             }
@@ -76,8 +61,6 @@ namespace IPC2_Proyecto2.TDA
             return true;
         }
 
-        // Inserta "nuevoHijo" entre los hijos de "padre", manteniendo
-        // el orden alfabético exigido por el enunciado.
         private void InsertarOrdenadoAlfabeticamente(NodoCategoria padre, NodoCategoria nuevoHijo)
         {
             if (padre.PrimerHijo == null)
@@ -86,7 +69,6 @@ namespace IPC2_Proyecto2.TDA
                 return;
             }
 
-            // Caso especial: el nuevo hijo va antes que el primero.
             if (string.Compare(nuevoHijo.Nombre, padre.PrimerHijo.Nombre, StringComparison.OrdinalIgnoreCase) < 0)
             {
                 nuevoHijo.HermanoSiguiente = padre.PrimerHijo;
@@ -94,7 +76,6 @@ namespace IPC2_Proyecto2.TDA
                 return;
             }
 
-            // Caso general: buscamos el lugar correcto recorriendo los hermanos.
             NodoCategoria actual = padre.PrimerHijo;
             while (actual.HermanoSiguiente != null &&
                    string.Compare(actual.HermanoSiguiente.Nombre, nuevoHijo.Nombre, StringComparison.OrdinalIgnoreCase) < 0)
@@ -106,22 +87,18 @@ namespace IPC2_Proyecto2.TDA
             actual.HermanoSiguiente = nuevoHijo;
         }
 
-        // --- ASOCIAR UN LIBRO A SU CATEGORÍA ---
         public bool AgregarLibroACategoria(Libro libro)
         {
             NodoCategoria categoria = BuscarCategoria(libro.NombreCategoria);
             if (categoria == null)
             {
-                return false; // La categoría indicada no existe.
+                return false;
             }
 
             categoria.Libros.Agregar(libro);
             return true;
         }
 
-        // --- MOSTRAR ESTRUCTURA COMPLETA (o desde una subcategoría) ---
-        // Genera un texto con sangrías que representa el árbol,
-        // pensado para mostrarse en la interfaz web.
         public string MostrarEstructura(string nombreCategoriaInicio = null)
         {
             NodoCategoria inicio;
@@ -156,17 +133,12 @@ namespace IPC2_Proyecto2.TDA
             ConstruirTextoEstructura(actual.HermanoSiguiente, nivel, texto);
         }
 
-        // --- GENERAR TEXTO .DOT PARA GRAPHVIZ (estructura de categorías) ---
-        // Devuelve solo el "cuerpo" del grafo (nodos y conexiones), para que
-        // GeneradorGraphviz lo envuelva en "digraph { ... }".
-        // Si la categoría indicada no existe, devuelve null.
         public string GenerarDotEstructura(string nombreCategoriaInicio = null)
         {
             System.Text.StringBuilder dot = new System.Text.StringBuilder();
 
             if (string.IsNullOrEmpty(nombreCategoriaInicio))
             {
-                // Sin punto de inicio: dibujamos todas las categorías principales.
                 NodoCategoria actual = raizVirtual.PrimerHijo;
                 while (actual != null)
                 {
@@ -179,7 +151,7 @@ namespace IPC2_Proyecto2.TDA
                 NodoCategoria inicio = BuscarCategoria(nombreCategoriaInicio);
                 if (inicio == null)
                 {
-                    return null; // La categoría no existe.
+                    return null;
                 }
                 VisitarCategoriaParaDot(inicio, dot);
             }
@@ -187,9 +159,6 @@ namespace IPC2_Proyecto2.TDA
             return dot.ToString();
         }
 
-        // Declara el nodo actual y lo conecta con cada uno de sus hijos,
-        // visitando recursivamente a cada hijo (que a su vez se declara
-        // y conecta con sus propios hijos, y así sucesivamente).
         private void VisitarCategoriaParaDot(NodoCategoria nodo, System.Text.StringBuilder dot)
         {
             string idNodo = ObtenerIdDot(nodo);
@@ -205,14 +174,11 @@ namespace IPC2_Proyecto2.TDA
             }
         }
 
-        // Genera un identificador único y válido para Graphviz a partir
-        // del nombre de la categoría (entre comillas, para permitir espacios).
         private string ObtenerIdDot(NodoCategoria nodo)
         {
             return "\"cat_" + EscaparParaDot(nodo.Nombre) + "\"";
         }
 
-        // Evita que comillas dentro del nombre rompan la sintaxis del .dot.
         private string EscaparParaDot(string texto)
         {
             return texto.Replace("\"", "'");

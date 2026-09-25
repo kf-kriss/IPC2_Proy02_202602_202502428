@@ -21,12 +21,6 @@ namespace IPC2_Proyecto2
             Libros = new ArbolLibros();
         }
 
-        // Internamente usa excepciones propias (que heredan de Exception)
-        // para representar cada posible error, y las atrapa aquí mismo
-        // para devolver un mensaje amigable a la interfaz web. Esto es
-        // un ejemplo real de POLIMORFISMO: el "catch (Exception ex)"
-        // atrapa por igual cualquier subclase de Exception que se lance
-        // dentro de ValidarRegistro, sin necesidad de saber cuál fue.
         public string RegistrarLibro(int isbn, string titulo, string autor, string nombreCategoria)
         {
             try
